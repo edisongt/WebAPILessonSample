@@ -1,0 +1,6 @@
+namespace WebAPILessonOne.Areas.HelpPage.ModelDescriptions
+{
+    public class SimpleTypeModelDescription : ModelDescription
+    {
+    }
+}

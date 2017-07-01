@@ -21,7 +21,6 @@ namespace WebAPILessonOne.Areas.HelpPage.Controllers
             db.Configuration.LazyLoadingEnabled = false;
         }
 
-
         // GET: api/Clients
         public IQueryable<Client> GetClients()
         {
@@ -30,21 +29,27 @@ namespace WebAPILessonOne.Areas.HelpPage.Controllers
 
         // GET: api/Clients/5
         [ResponseType(typeof(Client))]
-        public IHttpActionResult GetClient(int id)
+        [Route("clients/{id:int}",Name = "GetClientByID")]
+        public Client GetClient(int id)
         {
             Client client = db.Clients.Find(id);
-            if (client == null)
-            {
-                return NotFound();
-            }
+            //if (client == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return Ok(client);
+            return client;
         }
 
         [Route("clients/{id:int}/orders")]
         public IHttpActionResult GetOrderByClientId(int id)
         {
             var orders = db.Orders.Where(x => x.ClientId == id);
+            if (!orders.Any())
+            {
+                return RedirectToRoute("GetClientById", new { id = id });
+            }
+
             return Ok(orders);
         }
 

@@ -11,7 +11,8 @@ namespace WebAPILessonOne.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Client
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,8 +20,9 @@ namespace WebAPILessonOne.Models
         {
             this.Orders = new HashSet<Order>();
         }
-    
+
         public int ClientId { get; set; }
+        [Required]
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -37,7 +39,7 @@ namespace WebAPILessonOne.Models
         public Nullable<double> Longitude { get; set; }
         public Nullable<double> Latitude { get; set; }
         public string Notes { get; set; }
-    
+
         public virtual Occupation Occupation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }

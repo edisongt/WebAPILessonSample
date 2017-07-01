@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using WebAPILessonOne.ActionFilters;
 using WebAPILessonOne.Models;
 
 namespace WebAPILessonOne.Areas.HelpPage.Controllers
@@ -29,16 +30,19 @@ namespace WebAPILessonOne.Areas.HelpPage.Controllers
 
         // GET: api/Clients/5
         [ResponseType(typeof(Client))]
-        [Route("clients/{id:int}",Name = "GetClientByID")]
-        public Client GetClient(int id)
+        [Route("clients/{id:int}", Name = "GetClientByID")]
+        public HttpResponseMessage GetClient(int id)
         {
             Client client = db.Clients.Find(id);
-            //if (client == null)
-            //{
-            //    return NotFound();
-            //}
+            if (client == null)
+            {
+                return new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
 
-            return client;
+            return Request.CreateResponse(HttpStatusCode.OK, client);
         }
 
         [Route("clients/{id:int}/orders")]
@@ -128,12 +132,11 @@ namespace WebAPILessonOne.Areas.HelpPage.Controllers
 
         // POST: api/Clients
         [ResponseType(typeof(Client))]
+        [Route("clients")]
+        [ValidateModel]
         public IHttpActionResult PostClient(Client client)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+          
 
             db.Clients.Add(client);
             db.SaveChanges();
